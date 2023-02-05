@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "AutoSMSForward",
+    "slug": "AutoSMSForward",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "AutoSMSForward"
+}
