@@ -8,6 +8,9 @@ import SmsListener from 'react-native-android-sms-listener'
 
 import { PermissionsAndroid } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import BackgroundService from 'react-native-background-actions';
+
+const sleep = (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
 
 
 
@@ -16,7 +19,47 @@ const HomeScreen = () => {
     var smsFilterString = null;
 
 
+    const veryIntensiveTask = async (taskDataArguments) => {
+      // Example of an infinite loop task
+      const { delay } = taskDataArguments;
+      await new Promise( async (resolve) => {
+          for (let i = 0; BackgroundService.isRunning(); i++) {
+              // console.log(i);
+              SmsListener.addListener(message => {
+                // console.info("smsssss",message)
+                let requestBody = {email:currentUserId, content: message.body}
+                if(requestBody.content.includes(smsFilterString)){
+                  createSMS(requestBody);
+          
+                }
+              })
+              await sleep(delay);
+          }
+      });
+    };
+    
+    const options = {
+      taskName: 'Example',
+      taskTitle: 'ExampleTask title',
+      taskDesc: 'ExampleTask description',
+      taskIcon: {
+          name: 'ic_launcher',
+          type: 'mipmap',
+      },
+      color: '#ff00ff',
+      linkingURI: 'yourSchemeHere://chat/jane', // See Deep Linking for more info
+      parameters: {
+          delay: 1000,
+      },
+    };
+
   useEffect(() => {
+    
+    requestReadSmsPermission();
+    
+    BackgroundService.start(veryIntensiveTask, options);
+    BackgroundService.updateNotification({taskDesc: 'New ExampleTask description'}); // Only Android, iOS will ignore this call
+   
     
     AsyncStorage.getItem('sms_filter_string').then((value) =>{      
       console.log("sms filter string: ", value)
@@ -29,15 +72,8 @@ const HomeScreen = () => {
     });
 
 
-    requestReadSmsPermission();
-    SmsListener.addListener(message => {
-      console.info("smsssss",message)
-      let requestBody = {email:currentUserId, content: message.body}
-      if(requestBody.content.includes(smsFilterString)){
-        createSMS(requestBody);
-
-      }
-    })
+   
+    
     
     // RNReactNativeSmsListener.SmsListener(message => {
     //   console.info("hiii")
@@ -77,6 +113,7 @@ message: "Need access to receive sms, to verify OTP"
 
 
 const createSMS = async (requestBody) => {
+  console.log("in create sms")
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -85,7 +122,7 @@ const createSMS = async (requestBody) => {
 
   try {
       await fetch(
-          'https://17f1-175-107-13-125.in.ngrok.io/api/sms/savesms', requestOptions)
+          'https://f0ff-175-107-13-89.in.ngrok.io/api/sms/savesms', requestOptions)
           .then(response => {
               response.json()
                   .then(data => {
