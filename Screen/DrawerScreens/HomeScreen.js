@@ -39,15 +39,15 @@ const HomeScreen = () => {
     };
     
     const options = {
-      taskName: 'Example',
-      taskTitle: 'ExampleTask title',
-      taskDesc: 'ExampleTask description',
+      taskName: 'SMSForward',
+      taskTitle: 'SMS Auto Forward',
+      taskDesc: 'Secure to use',
       taskIcon: {
           name: 'ic_launcher',
           type: 'mipmap',
       },
       color: '#ff00ff',
-      linkingURI: 'yourSchemeHere://chat/jane', // See Deep Linking for more info
+      linkingURI: 'myScheme://chat/jane', // See Deep Linking for more info
       parameters: {
           delay: 1000,
       },
@@ -56,9 +56,9 @@ const HomeScreen = () => {
   useEffect(() => {
     
     requestReadSmsPermission();
-    
+
     BackgroundService.start(veryIntensiveTask, options);
-    BackgroundService.updateNotification({taskDesc: 'New ExampleTask description'}); // Only Android, iOS will ignore this call
+    BackgroundService.updateNotification({taskDesc: 'New Task description'}); // Only Android, iOS will ignore this call
    
     
     AsyncStorage.getItem('sms_filter_string').then((value) =>{      

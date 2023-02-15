@@ -19,7 +19,7 @@
       <action android:name="android.intent.action.VIEW" />
       <category android:name="android.intent.category.BROWSABLE" />
       <data android:scheme="https" />
-      <data android:scheme="yourSchemeHere" />
+      <data android:scheme="myScheme" />
     </intent>
   </queries>
 
