@@ -122,7 +122,7 @@ const createSMS = async (requestBody) => {
 
   try {
       await fetch(
-          'https://f0ff-175-107-13-89.in.ngrok.io/api/sms/savesms', requestOptions)
+          'https://a8f5-93-173-92-239.eu.ngrok.io/api/sms/savesms', requestOptions)
           .then(response => {
               response.json()
                   .then(data => {

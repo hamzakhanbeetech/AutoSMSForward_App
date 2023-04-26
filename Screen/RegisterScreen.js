@@ -74,7 +74,7 @@ const RegisterScreen = (props) => {
     }
     formBody = formBody.join('&');
 
-    fetch('https://17f1-175-107-13-125.in.ngrok.io/api/authentication/register', {
+    fetch('https://a8f5-93-173-92-239.eu.ngrok.io/api/authentication/register', {
       method: 'POST',
       body: formBody,
       headers: {
